@@ -1,13 +1,17 @@
-import tt_countdown from "./tt_countdown"
-import tt_weekly from "./tt_weekly"
-import tt_daily from "./tt_daily"
+// Sub modules
+import TT_countdown_display from './tt_countdown'
+import TT_weekly from './tt_weekly'
+import TT_daily from './tt_daily'
+
+// API data (formatted)
+import {daily_formatted, weekly_formatted} from "./tt_data"
 
 export default function tt_display(props) {
     return (
         <>
-            <tt_countdown />
-            <tt_daily />
-            <tt_weekly />
+            <TT_countdown_display raw={daily_formatted}/>
+            <TT_daily raw={daily_formatted}/>
+            <TT_weekly raw={weekly_formatted}/>
         </>
     )
 }
