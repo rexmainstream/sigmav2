@@ -41,8 +41,10 @@ export default function tt_daily(props) {
     )
 }
 
-// LOGIC, ORGANISE TIMETABLE BY BELLS
-// LOOP THROUGH BELLS, at the same time do periods[...bells[i].period] == undefined to check
-// Check for variation or teacher changes then 
-// Display period[...].title in array
-// Display array of divs
+/*
+LOGIC, ORGANISE TIMETABLE BY BELLS
+LOOP THROUGH BELLS, at the same time do periods[...bells[i].period] == undefined to check
+Check for variation or teacher changes then 
+Display period[...].title in array
+Display array of divs
+*/
