@@ -35,9 +35,9 @@ export default function tt_daily(props) {
         }
     }
     return (
-        <>
+        <div className="timetable_today">
             {timetable}
-        </>
+        </div>
     )
 }
 

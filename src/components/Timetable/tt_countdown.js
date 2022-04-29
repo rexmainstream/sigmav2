@@ -62,9 +62,9 @@ function tt_countdown_format(props) {
     // This is if it is END OF DAY or not
     if (i === (props.raw.bells.length - 1)) { //This shows end of day when last in array
         tt_message = (
-            <h3>{props.raw.bells[i].bellDisplay}</h3>
+            <h3 className="countdown_title">{props.raw.bells[i].bellDisplay}</h3>
         )
-    } else { 
+    } else {
         //converting into miliseconds
         total_seconds_period = props.raw.bells[i].startTime.split(":")[0] * 3600000 + props.raw.bells[i].startTime.split(":")[1] * 60000
         var total_seconds_period_end = props.raw.bells[i].endTime.split(":")[0] * 3600000 + props.raw.bells[i].endTime.split(":")[1] * 60000
@@ -80,7 +80,7 @@ function tt_countdown_format(props) {
             for (var item in props.raw.timetable.subjects) {
                 if (props.raw.timetable.subjects[item].shortTitle === period_name) {
                     period_name = props.raw.timetable.subjects[item].subject
-                    period_name = period_name.split(" ").slice(0,-1).join(" ") //removes the last component "YR12"
+                    period_name = period_name.split(" ").slice(0, -1).join(" ") //removes the last component "YR12"
                 }
             }
         }
@@ -91,8 +91,8 @@ function tt_countdown_format(props) {
 
             tt_message = (
                 <>
-                    <h3>{period_name} Ends in</h3>
-                    <p>{convertMsToHM(time_remaining)}</p>
+                    <h3 className="countdown_title">{period_name} Ends in</h3>
+                    <p className="countdown_subtitle">{convertMsToHM(time_remaining)}</p>
                 </>
             )
         } else { // If period hasnt started, shows when it starts
@@ -101,8 +101,8 @@ function tt_countdown_format(props) {
 
             tt_message = (
                 <>
-                    <h3>{period_name} Starts In</h3>
-                    <p>{convertMsToHM(time_remaining)}</p>
+                    <h3 className="countdown_title">{period_name} Starts In</h3>
+                    <p className="countdown_subtitle">{convertMsToHM(time_remaining)}</p>
                 </>
             )
         }
@@ -114,6 +114,7 @@ function tt_countdown_format(props) {
 
 
 export default function TT_countdown_display(props) {
+    // To make the countdown refresh and show up to date timer
     var tt_messsage = tt_countdown_format(props)
     const [clockState, setClockState] = useState();
     useEffect(() => {
@@ -125,6 +126,10 @@ export default function TT_countdown_display(props) {
         }, 1000)
     }, [])
 
-    return tt_countdown_format(props)
+    return (
+        <div className="timetable_countdown">
+        {tt_countdown_format(props)}
+        </div>
+    )
 }
 

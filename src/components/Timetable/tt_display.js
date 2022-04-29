@@ -8,10 +8,10 @@ import {daily_formatted, weekly_formatted} from "./tt_data"
 
 export default function tt_display(props) {
     return (
-        <>
+        <div className='Timetable'>
             <TT_countdown_display raw={daily_formatted}/>
             <TT_daily raw={daily_formatted}/>
             <TT_weekly raw={weekly_formatted}/>
-        </>
+        </div>
     )
 }
