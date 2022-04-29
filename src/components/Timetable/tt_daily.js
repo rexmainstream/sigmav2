@@ -1,13 +1,8 @@
 export default function tt_daily(props) {
-    var i = 0
+    // Timetable to be stored and variable
     let timetable = []
-    //console.log(props.raw)
-    var periods = props.raw.timetable.timetable.periods
     var bells = props.raw.bells
-    for (var item in periods) {
-        //console.log(periods[item].title)
-    }
-    //console.log(Object.keys(props.raw.timetable.timetable.periods).length, props.raw.timetable.timetable.periods, props.raw.timetable.timetable.periods[8])
+
     for (var bell_position in bells) {
         //console.log(bell_position)
         if (props.raw.timetable.timetable.periods[bells[bell_position].period] !== undefined) {
@@ -21,38 +16,30 @@ export default function tt_daily(props) {
                     period_name = period_name.split(" ").slice(0, -1).join(" ") //removes the last component "YR12"
                 }
             }
-
+            var teacher = ""
+            if ((period_data.fullTeacher !== undefined) && (period_data.fullTeacher !== "")) {
+                teacher = "(" + period_data.fullTeacher + ")"
+            }
             timetable.push(
-                <div key={bell_position}>
-                    <p>{bells[bell_position].period} - {period_name} ({period_data.teacher})</p>
+                <div key={bell_position} className="period_class">
+                    <p>{bells[bell_position].period} - {period_name} {teacher}</p>
                 </div>
             )
             //console.log(props.raw.timetable.timetable.periods[bells[bell_position].period])
         } else {
             timetable.push(
-                <div key={bell_position}>
+                <div key={bell_position} className="period_break">
                     <p>{bells[bell_position].bellDisplay}</p>
                 </div>
             )
         }
     }
-    // while (props.raw.timetable.timetable.periods[i] !== undefined) {
-    //     //console.log(props.raw.timetable.timetable.periods[i])
-    //     timetable.push (
-    //         <>
-    //         <p>{props.raw.timetable.timetable.periods[i].title} - {props.raw.timetable.timetable.periods[i].teacher}</p>
-    //         </>
-    //     )
-    //     i += 1
-    // }
     return (
         <>
             {timetable}
         </>
     )
 }
-
-
 
 // LOGIC, ORGANISE TIMETABLE BY BELLS
 // LOOP THROUGH BELLS, at the same time do periods[...bells[i].period] == undefined to check

@@ -21,15 +21,15 @@ function convertMsToHM(milliseconds) {
 function tt_countdown(props) {
     var current_time = (new Date()).toString().split(" ")[4]
     var i = 0
-    var eod = false
+    //var eod = false
     var finish = false
     var total_seconds_today = (parseInt(current_time.slice(0, 2) - 0) * 3600000) + (current_time.slice(3, 5) * 60000) + parseInt(current_time.slice(6, 8) * 1000)
     while (i < props.raw.bells.length && finish === false) {
-        var current_time = (new Date()).toString().split(" ")[4]
+        current_time = (new Date()).toString().split(" ")[4]
         var total_seconds_period = props.raw.bells[i].startTime.split(":")[0] * 3600000 + props.raw.bells[i].startTime.split(":")[1] * 60000
         if (total_seconds_today > total_seconds_period) { // Checks if period has already begun
-            if (i == (props.raw.bells.length - 1)) { // checks if it is last period (End of day)
-                eod = true
+            if (i === (props.raw.bells.length - 1)) { // checks if it is last period (End of day)
+                //eod = true
                 break;
             } else { // Returns when the period ends
                 var total_seconds_period_end = props.raw.bells[i].endTime.split(":")[0] * 3600000 + props.raw.bells[i].endTime.split(":")[1] * 60000
@@ -53,7 +53,6 @@ function tt_countdown_format(props) {
 
     // Variable Establishing
     var i = tt_countdown(props).i
-    var current_time = tt_countdown(props).current_time
     var total_seconds_period = tt_countdown(props).total_seconds_period
     var total_seconds_today = tt_countdown(props).total_seconds_today
     //console.log("Calculation has ended with variables:",current_time.slice(0, 2) - 10, new Date())
@@ -67,19 +66,19 @@ function tt_countdown_format(props) {
         )
     } else { 
         //converting into miliseconds
-        var total_seconds_period = props.raw.bells[i].startTime.split(":")[0] * 3600000 + props.raw.bells[i].startTime.split(":")[1] * 60000
+        total_seconds_period = props.raw.bells[i].startTime.split(":")[0] * 3600000 + props.raw.bells[i].startTime.split(":")[1] * 60000
         var total_seconds_period_end = props.raw.bells[i].endTime.split(":")[0] * 3600000 + props.raw.bells[i].endTime.split(":")[1] * 60000
 
         // CHECKS IF PERIOD EXISTS OR NOT --> Converts "Period 2" to "Maths Extension 2"
         var period_name = props.raw.bells[i].bellDisplay
-        var entry_number
 
         if (Number.isInteger(parseInt(props.raw.bells[i].bellDisplay.slice(-1))) && props.raw.bells[i].bellDisplay.includes("Period")) {
-            period_name = props.raw.timetable.timetable.periods[props.raw.bells[i].bellDisplay.slice(-1)].title
+            if (props.raw.timetable.timetable.periods[props.raw.bells[i].bellDisplay.slice(-1)] !== undefined) {
+                period_name = props.raw.timetable.timetable.periods[props.raw.bells[i].bellDisplay.slice(-1)].title
+            }
             //console.log(period_name, "THIS IS PERIOD NAme")
             for (var item in props.raw.timetable.subjects) {
                 if (props.raw.timetable.subjects[item].shortTitle === period_name) {
-                    entry_number = item
                     period_name = props.raw.timetable.subjects[item].subject
                     period_name = period_name.split(" ").slice(0,-1).join(" ") //removes the last component "YR12"
                 }
@@ -87,7 +86,7 @@ function tt_countdown_format(props) {
         }
         //checking if period has started or not
         if (total_seconds_today > total_seconds_period) { // If the period has started, shows when it ends
-            var total_seconds_period = props.raw.bells[i].startTime.split(":")[0] * 3600000 + props.raw.bells[i].startTime.split(":")[1] * 60000
+            total_seconds_period = props.raw.bells[i].startTime.split(":")[0] * 3600000 + props.raw.bells[i].startTime.split(":")[1] * 60000
             var time_remaining = total_seconds_period_end - total_seconds_today
 
             tt_message = (
@@ -97,8 +96,8 @@ function tt_countdown_format(props) {
                 </>
             )
         } else { // If period hasnt started, shows when it starts
-            var total_seconds_period = props.raw.bells[i].startTime.split(":")[0] * 3600000 + props.raw.bells[i].startTime.split(":")[1] * 60000
-            var time_remaining = total_seconds_period - total_seconds_today
+            total_seconds_period = props.raw.bells[i].startTime.split(":")[0] * 3600000 + props.raw.bells[i].startTime.split(":")[1] * 60000
+            time_remaining = total_seconds_period - total_seconds_today
 
             tt_message = (
                 <>
