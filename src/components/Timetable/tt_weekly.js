@@ -10,7 +10,7 @@ export default function tt_weekly(props) {
 
         // Displaying the day and allocating to the week
         day_timetable.push(
-            <div className="period_day">
+            <div className="period_day" key={`name-${props.raw.days[day].dayname.slice(0, -1)}`}>
                 {props.raw.days[day].dayname.slice(0, -1)}
             </div>
         )
