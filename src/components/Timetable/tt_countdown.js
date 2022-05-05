@@ -58,7 +58,13 @@ function tt_countdown_format(props) {
     //console.log("Calculation has ended with variables:",current_time.slice(0, 2) - 10, new Date())
     var tt_message
 
-    // Determining if we need to display time left
+    
+
+    // This determines if it is a week end or not (If we need to display time left or not)
+    if ((new Date()).toString().split(" ")[0] === "Sat" || (new Date()).toString().split(" ")[0] === "Sun") {
+        tt_message = props.timetable.timetable.dayname
+        return tt_message
+    }
     // This is if it is END OF DAY or not
     if (i === (props.raw.bells.length - 1)) { //This shows end of day when last in array
         tt_message = (
