@@ -1,3 +1,5 @@
+/* CSS that came with react*/
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -5,9 +7,63 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: #f2f2f2;
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+/* Timetable CSS*/
+
+@media screen and (max-width: 999px) {
+  .timetable, .timetable_today {
+    grid-column: 1/end;
+  }
+}
+
+.timetable {
+  padding-inline-start: 2.5rem;
+  padding-inline-end: 2.5rem;
+  padding-block-start: 1rem;
+  grid-row: 1;
+  text-align: center;
+}
+
+
+.timetable_countdown {
+  background: white;
+  border-radius: 5px;
+  padding: 0.5rem 1rem 0.5rem 1rem;
+  box-shadow: 0 2px 8px rgb(0 0 0 / 5%);
+  margin-block-end: 3rem;
+}
+
+.timetable_today {
+  background-color: #fff;
+  display: table;
+  vertical-align: middle;
+  inline-size: 100%;
+  position: relative;
+  border-radius: 5px;
+}
+
+.period_class {
+  font-size: 1.2rem;
+  inline-size: 100%;
+  padding: 0rem 1rem 0rem 1rem;
+  left: 25%;
+  text-align: left;
+  position: relative;
+}
+
+.period_break {
+  background-color: hsla(0, 0%, 95%, .5);
+  color: #7f7f7f;
+  font-size: 0.8rem;
+  padding: 0.1rem 0 0.1rem 0;
+  inline-size: 50%;
+  left: 25%;
+  position: relative;
 }
