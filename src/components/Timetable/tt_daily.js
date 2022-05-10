@@ -5,7 +5,7 @@ export default function tt_daily(props) {
 
     for (var bell_position in bells) {
         //console.log(bell_position)
-        if (props.raw.timetable.timetable.periods[bells[bell_position].period] !== undefined) {
+        if (props.raw.timetable.timetable.periods[bells[bell_position].period] !== undefined) { //if class
             var period_data = props.raw.timetable.timetable.periods[bells[bell_position].period]
 
             //Converts it from shorttitle to full title
@@ -21,23 +21,25 @@ export default function tt_daily(props) {
                 teacher = "(" + period_data.fullTeacher + ")"
             }
             timetable.push(
-                <div key={bell_position} className="period_class">
-                    <p>{bells[bell_position].period} - {period_name} {teacher}</p>
-                </div>
+                <tr key={bell_position} className="period_class">
+                    <td>{bells[bell_position].period} - {period_name} {teacher}</td>
+                </tr>
             )
             //console.log(props.raw.timetable.timetable.periods[bells[bell_position].period])
-        } else {
+        } else { //if break
             timetable.push(
-                <div key={bell_position} className="period_break">
-                    <p>{bells[bell_position].bellDisplay}</p>
-                </div>
+                <tr key={bell_position} className="period_break">
+                    <td>{bells[bell_position].bellDisplay}</td>
+                </tr>
             )
         }
     }
     return (
-        <div className="timetable_today">
-            {timetable}
-        </div>
+        <table className="timetable_today" cellPadding={0} cellSpacing={0}>
+            <tbody>
+                {timetable}
+            </tbody>
+        </table>
     )
 }
 

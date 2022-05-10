@@ -67,3 +67,40 @@ code {
   left: 25%;
   position: relative;
 }
+
+/* Countdown Timetable */
+
+.timetable_countdown {
+  background: white;
+  border-radius: 5px;
+  padding: 0.5rem 1rem 0.5rem 1rem;
+  box-shadow: 0 2px 8px rgb(0 0 0 / 5%);
+  margin-block-end: 3rem;
+}
+
+#time_until_transition {
+  font-size: 4.5rem;
+}
+
+/* Timetable Today */
+
+.timetable_today {
+  table-layout: fixed;
+  display: table;
+  border-collapse: collapse;
+  margin-block-start: 2rem;
+  inline-size: 55%;
+}
+
+.period_class {
+  font-size: 1.6rem;
+  inline-size: 100%;
+}
+
+.period_break {
+  font-size: 1.2rem;
+  text-align: left;
+  color: rgb(127, 127, 127);
+  inline-size: 100%;
+}
+

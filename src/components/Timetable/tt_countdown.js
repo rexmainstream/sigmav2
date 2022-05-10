@@ -58,7 +58,7 @@ function tt_countdown_format(props) {
     //console.log("Calculation has ended with variables:",current_time.slice(0, 2) - 10, new Date())
     var tt_message
 
-    
+
 
     // This determines if it is a week end or not (If we need to display time left or not)
     if ((new Date()).toString().split(" ")[0] === "Sat" || (new Date()).toString().split(" ")[0] === "Sun") {
@@ -118,6 +118,16 @@ function tt_countdown_format(props) {
 
 }
 
+//UI Design variables
+const line_height = 40;
+let line_width = 75;
+let stroke_width = 1.5;
+
+if (window.screen.width < 1000) {
+    line_width = 100;
+    stroke_width = 4;
+}
+
 
 export default function TT_countdown_display(props) {
     // To make the countdown refresh and show up to date timer
@@ -133,8 +143,16 @@ export default function TT_countdown_display(props) {
     }, [])
 
     return (
-        <div className="timetable_countdown">
-        {tt_countdown_format(props)}
+        <div className="flex timetable_countdown">
+            <div className="center_vertical">
+            <svg width={line_width} height={line_height}>
+                <line className="left-to-right line" x1={0} y1={line_height / 2} x2={3 / 4 * line_width} y2={line_height / 2} stroke="rgb(29 98 149)" strokeWidth={stroke_width}></line>
+            </svg>
+            <div className="time_until_transition">{tt_countdown_format(props)}</div>
+            <svg width={line_width} height={line_height}>
+                <line className="right-to-left line" x1={line_width} y1={line_height / 2} x2={line_width / 4} y2={line_height / 2} stroke="rgb(29 98 149)" strokeWidth={stroke_width}></line>
+            </svg>
+            </div>
         </div>
     )
 }
