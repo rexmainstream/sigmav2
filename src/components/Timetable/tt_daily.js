@@ -2,7 +2,9 @@ export default function tt_daily(props) {
     // Timetable to be stored and variable
     let timetable = []
     var bells = props.raw.bells
+    console.log(props.raw)
 
+    //required to check for room to teacher variation
     for (var bell_position in bells) {
         //console.log(bell_position)
         if (props.raw.timetable.timetable.periods[bells[bell_position].period] !== undefined) { //if class

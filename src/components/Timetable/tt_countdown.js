@@ -97,7 +97,7 @@ function tt_countdown_format(props) {
 
             tt_message = (
                 <>
-                    <h3 className="countdown_title">{period_name} Ends in</h3>
+                    <h3 className="countdown_title">{period_name} ends in</h3>
                     <p className="countdown_subtitle">{convertMsToHM(time_remaining)}</p>
                 </>
             )
