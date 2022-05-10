@@ -6,7 +6,7 @@ import TT_DAILY from './tt_daily'
 // API data (formatted)
 import {daily_formatted, weekly_formatted} from "./tt_data"
 
-export default function tt_display(props) {
+export default function tt_display() {
     return (
         <div className='timetable'>
             <TT_COUNTDOWN_DISPLAY raw={daily_formatted}/>
