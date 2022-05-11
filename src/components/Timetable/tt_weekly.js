@@ -21,24 +21,24 @@ export default function tt_weekly(props) {
                 var key_value = periods_list[period_index] + "-" + day
                 if (props.raw.days[day].periods[periods_list[period_index]] === undefined) { // If the period is a free or a break
                     period_timetable.push(
-                        <div className="period_empty" key={`${props.raw.days[day].dayname}${key_value}`}>
-                            <div className="period_number">
+                        <tr className="period_empty" key={`${props.raw.days[day].dayname}${key_value}`}>
+                            <td className="period_number">
                                 {periods_list[period_index]}
-                            </div>
-                            <div className="period_description">
-                            </div>
-                        </div>
+                            </td>
+                            <td className="period_description">
+                            </td>
+                        </tr>
                     )
                 } else { // If the period has a class, then displays class details
                     period_timetable.push(
-                        <div className="period_class" key={`${props.raw.days[day].dayname}${key_value}`}>
-                            <div className="period_number">
+                        <tr className="period_class" key={`${props.raw.days[day].dayname}${key_value}`}>
+                            <td className="period_number">
                                 {periods_list[period_index]}
-                            </div>
-                            <div className="period_description">
+                            </td>
+                            <td className="period_description">
                                 {props.raw.days[day].periods[periods_list[period_index]].title}
-                            </div>
-                        </div>
+                            </td>
+                        </tr>
                     )
                 }
             }
@@ -47,17 +47,19 @@ export default function tt_weekly(props) {
         // The list containing today's periods are pushed to the week of days
         // This requires a seperate module because we need to nest it inside a div for CSS formatting
         day_timetable.push(
-            <div className="day" key={props.raw.days[day].dayname}>
+            <td className="day" key={props.raw.days[day].dayname}>
                 {period_timetable}
-            </div>
+            </td>
         )
         period_timetable = []
         // The list containing the week's day is pushed to the list of weeks
         if (props.raw.days[day].dayname.slice(0, -1) === "Fri") {
             timetable.push(
-                <div className="week" key={props.raw.days[day].dayname.slice(-1)}>
-                    {day_timetable}
-                </div>
+                <table className="week" key={props.raw.days[day].dayname.slice(-1)}>
+                    <tbody>
+                        {day_timetable}
+                    </tbody>
+                </table>
             )
             day_timetable = []
         }

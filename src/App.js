@@ -47,7 +47,6 @@ function App() {
             <Route exact path="/timetable" element={<TT_display />} />
           </Routes>
         </main>
-        <TT_display />
         <Footer />
       </BrowserRouter>
     </div>
