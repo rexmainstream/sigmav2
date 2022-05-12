@@ -3,16 +3,16 @@ export default function tt_weekly(props) {
     var day = 1
     var timetable = []
     var day_timetable = []
+    var period_header_table = []
     var period_timetable = []
-    //console.log(props.raw.days)
     // Sorting the raw into days
     while (day <= (Object.keys(props.raw.days).length)) {
 
-        // Displaying the day and allocating to the week
-        day_timetable.push(
-            <div className="period_day" key={`name-${props.raw.days[day].dayname.slice(0, -1)}`}>
+        // Display the headers of each day e.g "Mon"
+        period_header_table.push(
+            <td className="period_day" key={`name-${props.raw.days[day].dayname.slice(0, -1)}`}>
                 {props.raw.days[day].dayname.slice(0, -1)}
-            </div>
+            </td>
         )
         // Checking which periods are on
         var periods_list = props.raw.days[day].routine.split(",")
@@ -57,10 +57,14 @@ export default function tt_weekly(props) {
             timetable.push(
                 <table className="week" key={props.raw.days[day].dayname.slice(-1)}>
                     <tbody>
+                        {period_header_table}
+                    </tbody>
+                    <tbody>
                         {day_timetable}
                     </tbody>
                 </table>
             )
+            period_header_table = []
             day_timetable = []
         }
         day += 1
