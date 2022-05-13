@@ -31,7 +31,7 @@ export function request_code() {
  * Requests tokens from SBHS API using code following callback
  * @returns True if tokens were aquired successfully
  */
-export async function request_tokens() {
+export async function request_callback_tokens() {
 
   // extracts code from url
   const query_string = window.location.search
@@ -41,65 +41,64 @@ export async function request_tokens() {
 
   // denied access
   if (code === null) {
-    return false
+    window.location.assign("/")
   }
 
-  window.history.replaceState({}, "", "/")
+  // access valid
+  else {
+    // creats url request and body
+    const request_url = "https://student.sbhs.net.au/api/token"
+    const request_body = (
+        "grant_type=authorization_code" +
+        "&redirect_uri=" + redirect_uri +
+        "&client_id=" + client_id +
+        "&client_secret=" + client_secret + 
+        "&code=" + code
+    )
+    
+    
+    // request tokens
+    console.log("exchanging code for tokens")
 
-  // creats url request and body
-  const request_url = "https://student.sbhs.net.au/api/token"
-  const request_body = (
-      "grant_type=authorization_code" +
-      "&redirect_uri=" + redirect_uri +
-      "&client_id=" + client_id +
-      "&client_secret=" + client_secret + 
-      "&code=" + code
-  )
-  
-  
-  // request tokens
-  console.log("exchanging code for tokens")
+    let response = await fetch(request_url, {
+      method: "POST",
+      headers: {"Content-type": "application/x-www-form-urlencoded; charset=UTF-8"},
+      body: request_body}
+      ).catch(err => console.log(err))
 
-  let response = await fetch(request_url, {
-    method: "POST",
-    headers: {"Content-type": "application/x-www-form-urlencoded; charset=UTF-8"},
-    body: request_body}
-    ).catch(err => console.log(err))
+    if (!response.ok) {
 
-  if (!response.ok) {
+        console.log("Error fetching tokens. -1")
 
-      console.log("Error fetching tokens. -1")
+        response = await fetch(request_url, {
+            method: "POST",
+            headers: {"Content-type": "application/x-www-form-urlencoded; charset=UTF-8"},
+            body: request_body}
+            ).catch(e => console.log(e))
 
-      response = await fetch(request_url, {
-          method: "POST",
-          headers: {"Content-type": "application/x-www-form-urlencoded; charset=UTF-8"},
-          body: request_body}
-          ).catch(e => console.log(e))
+        if (!response.ok) {
 
-      if (!response.ok) {
+            console.log('Error fetching tokens. -2')
+            return false
 
-          console.log('Error fetching tokens. -2')
-          return false
+        }
+    }
 
-      }
+    // process tokens
+    let tokens = await response.json()
+    
+    if (tokens) {
+
+        localStorage.setItem('access_token', tokens['access_token'])
+        localStorage.setItem('access_token_expiry', new Date(Date.now() + 60*60*1000))
+        localStorage.setItem('refresh_token', tokens['refresh_token'])
+        localStorage.setItem('refresh_token_expiry', new Date(Date.now() + 90*24*60*60*1000))
+
+        window.location.assign('/')
+        localStorage.removeItem('state')
+
+    } 
   }
-
-  // process tokens
-
-  let tokens = await response.json()
-  
-  if (tokens) {
-
-      localStorage.setItem('access_token', tokens['access_token'])
-      localStorage.setItem('access_token_expiry', new Date(Date.now() + 60*60*1000))
-      localStorage.setItem('refresh_token', tokens['refresh_token'])
-      localStorage.setItem('refresh_token_expiry', new Date(Date.now() + 90*24*60*60*1000))
-
-      window.location.assign('/')
-      localStorage.removeItem('state')
-      return true
-  } 
-
 }
 
 
@@ -110,7 +109,7 @@ export async function request_tokens() {
 export async function get_tokens() {
 
   // refresh token does not exist (i.e. not logged on)
-  if (localStorage.getItem("refresh_token") == null) {
+  if (localStorage.getItem("refresh_token") === null) {
 
       // defaults to login page
       return 'Login'
@@ -138,7 +137,8 @@ export async function get_tokens() {
       const request_body = (
         "grant_type=refresh_token" +
         "&client_id=" + client_id +
-        "&refresh_token=" + refresh_token 
+        "&redirect_uri=" + redirect_uri +
+        "&refresh_token=" + refresh_token
         // "&code_verifier=" + verifier
       )
 
@@ -176,6 +176,45 @@ export async function get_tokens() {
 /**
  * Fetchs data from SBHS API using stored tokens
  */
-export function get_data() {
+export async function get_data() {
+  
+  const callables = {
+    tt: "timetable/timetable.json",
+    dtt: "timetable/daytimetable.json",
+    bl: "timetable/bells.json",
+    ui: "details/userinfo.json",
+    pa: "details/participation.json",
+    nw: "dailynews/list.json"
+  }
+
+  const token = "Bearer " + localStorage.getItem('access_token')
+
+  for (const ask in callables) {
+
+    var request_url = "https://student.sbhs.net.au/api/" + callables[ask]
+
+    await fetch(request_url, {
+      headers: new Headers({'Authorization': token})
+    })
+    .then((res) => {
+      if ( ask === 'tt') {
+        window.timetable = res.json()
+      } else if (ask === 'dtt') {
+        window.day_timetable = res.json()
+      } else if (ask === 'bl') {
+        window.bells = res.json()
+      } else if (ask === 'ui') {
+        window.user_info = res.json()
+      } else if (ask === 'pa') {
+        window.participation = res.json()
+      } else if (ask === 'nw') {
+        window.news = res.json()
+      }
+    })
+    .catch((err) => {
+      console.log(err)
+    })
+
+  }
 
 }
