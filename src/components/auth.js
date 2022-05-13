@@ -1,4 +1,3 @@
-const site_url = encodeURIComponent("http://localhost:3000")
 const redirect_uri =  encodeURIComponent("http://localhost:3000/callback")
 const client_id = "sigma_dev"
 const client_secret = "GMbYj1-0bjX1M7MTkBYLd-h6-sE"
@@ -12,8 +11,6 @@ export function request_code() {
     const state = 'abc'
     localStorage.setItem('state', state)
 
-    
-    console.log('redirecting to SBHS API')
     window.location.href = (
         "https://student.sbhs.net.au/api/authorize?" +
         "response_type=code" +
@@ -42,6 +39,7 @@ export async function request_callback_tokens() {
   // denied access
   if (code === null) {
     window.location.assign("/")
+    return false
   }
 
   // access valid
@@ -58,8 +56,6 @@ export async function request_callback_tokens() {
     
     
     // request tokens
-    console.log("exchanging code for tokens")
-
     let response = await fetch(request_url, {
       method: "POST",
       headers: {"Content-type": "application/x-www-form-urlencoded; charset=UTF-8"},
@@ -79,6 +75,7 @@ export async function request_callback_tokens() {
         if (!response.ok) {
 
             console.log('Error fetching tokens. -2')
+
             return false
 
         }
@@ -99,20 +96,23 @@ export async function request_callback_tokens() {
 
     } 
   }
+
+  return true
+
 }
 
 
 /**
  * Attempts to retrieve access token if users are logged in
- * @returns Name of page to be displayed
+ * @returns True if token are retrieved successfully, False if user needs to login
  */
-export async function get_tokens() {
+export function get_tokens() {
 
   // refresh token does not exist (i.e. not logged on)
   if (localStorage.getItem("refresh_token") === null) {
 
-      // defaults to login page
-      return 'Login'
+    // defaults to login page
+    return false
 
   } 
   
@@ -121,7 +121,7 @@ export async function get_tokens() {
 
     // refresh token is expired
     localStorage.clear()
-    return 'Login'
+    return false
 
   }
 
@@ -139,33 +139,42 @@ export async function get_tokens() {
         "&client_id=" + client_id +
         "&redirect_uri=" + redirect_uri +
         "&refresh_token=" + refresh_token
-        // "&code_verifier=" + verifier
       )
 
-      let response = await fetch(request_url, {
+      let response = fetch(request_url, {
         method: "POST",
         headers: {"Content-type": "application/x-www-form-urlencoded; charset=UTF-8"},
         body: request_body
       }).catch(err => {
+          // error getting tokens
           console.log(err)
+          return false
       })
 
-      var access_token = await response.json().access_token
+      let access_token = response.json().access_token
       localStorage.setItem('access_token', access_token)
       localStorage.setItem('access_token_expiry', new Date(Date.now() + 60*60*1000))
 
-      get_data()
+      if (!get_data()) {
+        
+        return false
 
-      return 'Home'
+      }
+
+      return true
 
     }
 
     // access token valid
     else {
-
-      get_data()
       
-      return 'Home'
+      if (!get_data()) {
+
+        return false
+
+      }
+      
+      return true
 
     }
 
@@ -175,8 +184,15 @@ export async function get_tokens() {
 
 /**
  * Fetchs data from SBHS API using stored tokens
+ * @returns True for success
  */
 export async function get_data() {
+
+  window.timetable = ''
+  window.daytimetable = ''
+  window.bells = ''
+  window.userinfo = ''
+  window.participation = ''
   
   const callables = {
     tt: "timetable/timetable.json",
@@ -184,37 +200,28 @@ export async function get_data() {
     bl: "timetable/bells.json",
     ui: "details/userinfo.json",
     pa: "details/participation.json",
-    nw: "dailynews/list.json"
   }
 
   const token = "Bearer " + localStorage.getItem('access_token')
 
   for (const ask in callables) {
 
-    var request_url = "https://student.sbhs.net.au/api/" + callables[ask]
+    let request_url = "https://student.sbhs.net.au/api/" + callables[ask]
 
     await fetch(request_url, {
       headers: new Headers({'Authorization': token})
     })
     .then((res) => {
-      if ( ask === 'tt') {
-        window.timetable = res.json()
-      } else if (ask === 'dtt') {
-        window.day_timetable = res.json()
-      } else if (ask === 'bl') {
-        window.bells = res.json()
-      } else if (ask === 'ui') {
-        window.user_info = res.json()
-      } else if (ask === 'pa') {
-        window.participation = res.json()
-      } else if (ask === 'nw') {
-        window.news = res.json()
-      }
+      window.callables[ask] = {}
+      window.callables[ask] = res.json()
     })
     .catch((err) => {
       console.log(err)
+      return false
     })
 
   }
+
+  return true
 
 }
