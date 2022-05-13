@@ -30,7 +30,7 @@ export default function tt_weekly(props) {
                         </tr>
                     )
                 } else { // If the period has a class, then displays class details
-                    var period_name = props.raw.days[day].periods[periods_list[period_index]].title
+                    var period_name = props.raw.days[day].periods[periods_list[period_index]].title.split(" ")[0]
                     if (props.raw.days[day].periods[periods_list[period_index]].room === null) {
                         period_name = ""
                     }
