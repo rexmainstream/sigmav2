@@ -10,7 +10,7 @@ export default function tt_weekly(props) {
 
         // Display the headers of each day e.g "Mon"
         period_header_table.push(
-            <td className="period_day" key={`name-${props.raw.days[day].dayname.slice(0, -1)}`}>
+            <td className="period_cycle_day" key={`name-${props.raw.days[day].dayname.slice(0, -1)}`}>
                 {props.raw.days[day].dayname.slice(0, -1)}
             </td>
         )
@@ -21,7 +21,7 @@ export default function tt_weekly(props) {
                 var key_value = periods_list[period_index] + "-" + day
                 if (props.raw.days[day].periods[periods_list[period_index]] === undefined) { // If the period is a free or a break
                     period_timetable.push(
-                        <tr className="period_empty" key={`${props.raw.days[day].dayname}${key_value}`}>
+                        <tr className="period_cycle_empty" key={`${props.raw.days[day].dayname}${key_value}`}>
                             <td className="period_number">
                                 {periods_list[period_index]}
                             </td>
@@ -31,11 +31,11 @@ export default function tt_weekly(props) {
                     )
                 } else { // If the period has a class, then displays class details
                     period_timetable.push(
-                        <tr className="period_class" key={`${props.raw.days[day].dayname}${key_value}`}>
-                            <td className="period_number">
+                        <tr className="period_cycle_class" key={`${props.raw.days[day].dayname}${key_value}`}>
+                            <td className="period_cycle_number">
                                 {periods_list[period_index]}
                             </td>
-                            <td className="period_description">
+                            <td className="period_cycle_description">
                                 {props.raw.days[day].periods[periods_list[period_index]].title}
                             </td>
                         </tr>
@@ -57,10 +57,14 @@ export default function tt_weekly(props) {
             timetable.push(
                 <table className="week" key={props.raw.days[day].dayname.slice(-1)}>
                     <tbody>
-                        {period_header_table}
+                        <tr>
+                            {period_header_table}
+                        </tr>
                     </tbody>
                     <tbody>
+                        <tr>
                         {day_timetable}
+                        </tr>
                     </tbody>
                 </table>
             )

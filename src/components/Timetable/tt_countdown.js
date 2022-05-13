@@ -97,7 +97,7 @@ function tt_countdown_format(props) {
 
             tt_message = (
                 <>
-                    <h3 className="countdown_title">{period_name} ends in</h3>
+                    <h3 className="countdown_title">{period_name} Ends in</h3>
                     <p className="countdown_subtitle">{convertMsToHM(time_remaining)}</p>
                 </>
             )
@@ -143,7 +143,7 @@ export default function TT_countdown_display(props) {
     }, [])
 
     return (
-        <div className="flex timetable_countdown">
+        <div className="timetable_countdown box">
             <div className="center_vertical">
             <svg width={line_width} height={line_height}>
                 <line className="left-to-right line" x1={0} y1={line_height / 2} x2={3 / 4 * line_width} y2={line_height / 2} stroke="rgb(29 98 149)" strokeWidth={stroke_width}></line>

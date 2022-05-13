@@ -2,9 +2,8 @@ export default function tt_daily(props) {
     // Timetable to be stored and variable
     let timetable = []
     var bells = props.raw.bells
-    console.log(props.raw)
 
-    //required to check for room to teacher variation
+    //required to check for room to teacher variationA
     for (var bell_position in bells) {
         //console.log(bell_position)
         if (props.raw.timetable.timetable.periods[bells[bell_position].period] !== undefined) { //if class
@@ -25,9 +24,8 @@ export default function tt_daily(props) {
             }
             timetable.push(
                 <tr key={bell_position} className="period_class">
-                    <td className="period_name">{period_name}</td>
+                    <td className="period_name">{period_name}<div className="period_teacher">{teacher}</div></td>
                     <td className="period_room">{period_room}</td>
-                    <td className="period_teacher">{teacher}</td>
                 </tr>
             )
             //console.log(props.raw.timetable.timetable.periods[bells[bell_position].period])
@@ -37,13 +35,13 @@ export default function tt_daily(props) {
                     <tr key={bell_position} className="period_free">
                         <td className="period_name">{bells[bell_position].bellDisplay}</td>
                         <td className="period_room"></td>
-                        <td className="period_teacher"></td>
                     </tr>
                 )
             } else {
                 timetable.push(
                     <tr key={bell_position} className="period_break">
                         <td>{bells[bell_position].bellDisplay}</td>
+                        <td>{bells[bell_position].startTime}</td>
                     </tr>
                 )
             }
