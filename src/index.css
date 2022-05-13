@@ -84,7 +84,7 @@ code {
 }
 
 header {
-  font-size: 1.5rem;
+  font-size: 1.2rem; /* 1.5rem */
   background-color: white;
   z-index: 3;
   padding: 0;
@@ -148,12 +148,14 @@ ul.link_list {
 }
 
 .timetable_today {
-  width: 70%;
+  max-width: 1000px;
+  width: 100%;
   margin: auto;
   table-layout: fixed;
   border-collapse: separate;
   padding: 1.5rem;
   text-align: left;
+  border-spacing: 0 5px;
 }
 
 .timetable_today thead {
@@ -168,7 +170,8 @@ ul.link_list {
 
 .timetable tbody td {
   padding: 0.5rem;
-  font-size: 1.5rem;
+  font-size: 1.2rem;
+  border-radius: 5px;
   transition: color 0.1s ease-out;
 }
 
@@ -208,10 +211,6 @@ ul.link_list {
   text-align: right;
   width: 30%;
 }
-
-.timetable_today tr.period_class td:nth-child(3) {}
-
-.timetable tr.period_class td:nth-child(1) {}
 
 .timetable_today td:first-child {
   padding-inline-start: 1rem;

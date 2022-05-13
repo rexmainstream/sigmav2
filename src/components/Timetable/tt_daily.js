@@ -21,20 +21,29 @@ export default function tt_daily(props) {
             var teacher = ""
             if ((period_data.fullTeacher !== undefined) && (period_data.fullTeacher !== "")) {
                 teacher = "with " + period_data.fullTeacher + ""
+                timetable.push(
+                    <tr key={bell_position} className="period_class">
+                        <td className="period_name">{period_name}<div className="period_teacher">{teacher}</div></td>
+                        <td className="period_room">{period_room}</td>
+                    </tr>
+                )
+            } else {
+                period_room = bells[bell_position].startTime
+                timetable.push(
+                    <tr key={bell_position} className="period_break">
+                        <td>{period_name}</td>
+                        <td>{period_room}</td>
+                    </tr>
+                )
             }
-            timetable.push(
-                <tr key={bell_position} className="period_class">
-                    <td className="period_name">{period_name}<div className="period_teacher">{teacher}</div></td>
-                    <td className="period_room">{period_room}</td>
-                </tr>
-            )
+            
             //console.log(props.raw.timetable.timetable.periods[bells[bell_position].period])
         } else { //if break
             if (bells[bell_position].bellDisplay.split(" ")[0] === "Period") {
                 timetable.push(
                     <tr key={bell_position} className="period_free">
                         <td className="period_name">{bells[bell_position].bellDisplay}</td>
-                        <td className="period_room"></td>
+                        <td className="period_room">{bells[bell_position].startTime}</td>
                     </tr>
                 )
             } else {

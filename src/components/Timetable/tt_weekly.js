@@ -30,13 +30,17 @@ export default function tt_weekly(props) {
                         </tr>
                     )
                 } else { // If the period has a class, then displays class details
+                    var period_name = props.raw.days[day].periods[periods_list[period_index]].title
+                    if (props.raw.days[day].periods[periods_list[period_index]].room === null) {
+                        period_name = ""
+                    }
                     period_timetable.push(
                         <tr className="period_cycle_class" key={`${props.raw.days[day].dayname}${key_value}`}>
                             <td className="period_cycle_number">
                                 {periods_list[period_index]}
                             </td>
                             <td className="period_cycle_description">
-                                {props.raw.days[day].periods[periods_list[period_index]].title}
+                                {period_name}
                             </td>
                         </tr>
                     )
