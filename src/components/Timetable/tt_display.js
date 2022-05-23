@@ -1,6 +1,7 @@
 // Sub modules
 import TT_COUNTDOWN_DISPLAY from './tt_countdown'
 import TT_WEEKLY from './tt_weekly'
+import TT_WEEKLY2 from './tt_weekly2'
 import TT_DAILY from './tt_daily'
 
 // API data (formatted)
@@ -13,6 +14,7 @@ export default function tt_display(props) {
                 <TT_COUNTDOWN_DISPLAY raw={daily_formatted} />
                 <TT_DAILY raw={daily_formatted} />
                 <TT_WEEKLY raw={weekly_formatted} />
+                <button>Download as PDF</button>
             </div>
         </div>
     )

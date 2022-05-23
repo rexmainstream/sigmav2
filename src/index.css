@@ -15,6 +15,13 @@ code {
     monospace;
 }
 
+@media print {
+  .header {display: none;}
+  body {
+    height: 0px;
+  }
+}
+
 @media screen and (max-width: 999px) {
 
   /* font-size and layout for mobile devices. 
@@ -203,8 +210,8 @@ ul.link_list {
 
 .timetable_today td:nth-child(2) {
   padding-inline-end: 1rem;
-  text-align: inline-end;
-  width: 70%;
+  text-align: right;
+  width: 30%;
 }
 
 .timetable_today td:nth-child(1) {
@@ -215,5 +222,5 @@ ul.link_list {
 .timetable_today td:first-child {
   padding-inline-start: 1rem;
   text-align: left;
-  width: 50%;
+  width: 70%;
 }
