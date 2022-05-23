@@ -5,6 +5,24 @@ export default function tt_weekly(props) {
     var day_timetable = []
     var period_header_table = []
     var period_timetable = []
+
+    function highlight_classes(e) {
+        const the_class = e.target.classList[1];
+        const same_classes = document.getElementsByClassName(the_class);
+
+        for (const class_element of same_classes) {
+            class_element.classList.add('hovered_class');
+        }
+    }
+
+    function highlight_classes_time_out(e) {
+        const the_class = e.target.classList[1];
+        const same_classes = document.getElementsByClassName(the_class);
+
+        for (const class_element of same_classes) {
+            class_element.classList.remove("hovered_class");
+        }
+    }
     // Sorting the raw into days
     while (day <= (Object.keys(props.raw.days).length)) {
 
@@ -22,24 +40,34 @@ export default function tt_weekly(props) {
                 if (props.raw.days[day].periods[periods_list[period_index]] === undefined) { // If the period is a free or a break
                     period_timetable.push(
                         <tr className="period_cycle_empty" key={`${props.raw.days[day].dayname}${key_value}`}>
-                            <td className="period_number">
+                            {/* <td className="period_number">
                                 {periods_list[period_index]}
-                            </td>
+                            </td> */}
                             <td className="period_description">
                             </td>
                         </tr>
                     )
                 } else { // If the period has a class, then displays class details
+                    //adds the period name to the class, allows hover events
+                    
                     var period_name = props.raw.days[day].periods[periods_list[period_index]].title.split(" ")[0]
                     if (props.raw.days[day].periods[periods_list[period_index]].room === null) {
                         period_name = ""
                     }
+                    let class_name = `period_cycle_description ${period_name}`
                     period_timetable.push(
-                        <tr className="period_cycle_class" key={`${props.raw.days[day].dayname}${key_value}`}>
-                            <td className="period_cycle_number">
+                        <tr className="period_cycle_class" 
+                            key={`${props.raw.days[day].dayname}${key_value}`}>
+                            {/* <td className="period_cycle_number">
                                 {periods_list[period_index]}
-                            </td>
-                            <td className="period_cycle_description">
+                            </td> */}
+                            <td className={class_name}
+                                onMouseOver = {(e) => {
+                                    highlight_classes(e);
+                                }}
+                                onMouseLeave = {(e) =>{
+                                    highlight_classes_time_out(e);
+                                }}>
                                 {period_name}
                             </td>
                         </tr>
@@ -67,7 +95,7 @@ export default function tt_weekly(props) {
                     </thead>
                     <tbody>
                         <tr>
-                        {day_timetable}
+                            {day_timetable}
                         </tr>
                     </tbody>
                 </table>

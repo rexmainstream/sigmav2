@@ -234,8 +234,25 @@ ul.link_list {
 
 .week thead {
   color: rgba(124, 124, 124, 0.8);
+  text-transform: uppercase;
+}
+.week {
+  margin: auto;
+  margin-block-end: 3rem;
+}
+.week thead td {
+  border-bottom: 2px solid rgb(124,124,124);
 }
 
-.week thead td {
-  border-bottom: 2px solid black;
+.week tbody .day .period_cycle_class td{
+  cursor: pointer;
+  transition: all 0.2s ease-out;
+  background-color: white;
+
+}
+
+.week tbody .day td.hovered_class {
+  background-color: #1D6295;
+  color: white;
+  transition: all 0.5s ease-in;
 }
