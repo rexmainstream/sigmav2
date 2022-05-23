@@ -133,6 +133,18 @@ ul.link_list {
   */
 }
 
+.timetable_countdown {
+  margin: auto;
+}
+
+
+/*New Styles*/
+.center_vertical {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .timetable {
   font-size: 1.5rem;
   padding-inline-start: 1rem;
@@ -216,4 +228,14 @@ ul.link_list {
   padding-inline-start: 1rem;
   text-align: left;
   width: 50%;
+}
+
+/* || TIMETABLE WEEKLY */
+
+.week thead {
+  color: rgba(124, 124, 124, 0.8);
+}
+
+.week thead td {
+  border-bottom: 2px solid black;
 }

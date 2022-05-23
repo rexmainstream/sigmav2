@@ -60,11 +60,11 @@ export default function tt_weekly(props) {
         if (props.raw.days[day].dayname.slice(0, -1) === "Fri") {
             timetable.push(
                 <table className="week" key={props.raw.days[day].dayname.slice(-1)}>
-                    <tbody>
+                    <thead>
                         <tr>
                             {period_header_table}
                         </tr>
-                    </tbody>
+                    </thead>
                     <tbody>
                         <tr>
                         {day_timetable}
