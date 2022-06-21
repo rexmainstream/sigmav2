@@ -1,18 +1,28 @@
-// API data (formatted)
-import { daily_formatted, weekly_formatted } from "./tt_data"
+import React, { forwardRef as ForwardRef, useRef as UseRef } from "react";
+import ReactToPrint, { PrintContextConsumer } from "react-to-print";
+import TT_WEEKLY from './tt_weekly'
+import { weekly_formatted } from "./tt_data"
+
+/*Module Obtained From
+https://thewebdev.info/2021/11/20/how-to-print-a-react-component-on-click-of-a-button/
+*/
+const ComponentToPrint = ForwardRef((props, ref) => {
+    return <div ref={ref}><TT_WEEKLY raw={weekly_formatted} /></div>;
+});
 
 export default function tt_display(props) {
-    function generatePDF(divName) {
-        var content = document.getElementById("timetable_today");
-        var originalContents = document.body.innerHTML;
+    const ref = UseRef();
 
-        document.body.innerHTML = printContents;
-        window.print();
-        document.body.innerHTML = originalContents;
-    }
     return (
-        <div className='timetable_print'>
-            <button onClick={generatePDF("timetable_today")}>Download as PDF</button>
+        <div>
+            <ComponentToPrint ref={ref} />
+            <ReactToPrint content={() => ref.current}>
+                <PrintContextConsumer>
+                    {({ handlePrint }) => (
+                        <button className="print_button" onClick={handlePrint}>Print Weekly Timetable!</button>
+                    )}
+                </PrintContextConsumer>
+            </ReactToPrint>
         </div>
     )
 }

@@ -44,6 +44,7 @@ export default function tt_weekly(props) {
                                 {periods_list[period_index]}
                             </td> */}
                             <td className="period_description">
+                                -
                             </td>
                         </tr>
                     )
