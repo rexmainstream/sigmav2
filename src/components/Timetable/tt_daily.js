@@ -1,26 +1,56 @@
 export default function tt_daily(props) {
     // Timetable to be stored and variable
     let timetable = []
+    var variation
     var bells = props.raw.bells
 
-    //required to check for room to teacher variationA
+    //displaying variables
+    var period_name
+    var period_room
+    var teacher
+
+
+    //required to check for room to teacher variation
+    function check_variation(data, variation, position) {
+        //sets default teacher
+        teacher = "with " + data.timetable.timetable.periods[bells[position].period].fullTeacher + ""
+
+        //checks if variation exists and if period is part of the variation
+        if (variation === false) return
+        if (data.classVariations[bells[position].period] === undefined) return
+
+        //checks what type of variation it is, note it ignores "novariation"
+        if (data.classVariations[bells[position].period].type === "nocover") {
+            teacher = "-"
+        }
+        if (data.classVariations[bells[position].period].type === "replacement") {
+            teacher = data.classVariations[bells[position].period].casual
+        }
+        
+        //checks if there is a room
+        if (data.classVariations[bells[position].period].roomTo != null) {
+            period_room = data.classVariations[bells[position].period].roomTo
+        }
+    }
+    console.log(props.raw)
     for (var bell_position in bells) {
-        //console.log(bell_position)
-        if (props.raw.timetable.timetable.periods[bells[bell_position].period] !== undefined) { //if class
+        //checks if this is a period or (a break or a free)
+        if (props.raw.timetable.timetable.periods[bells[bell_position].period] !== undefined) {
             var period_data = props.raw.timetable.timetable.periods[bells[bell_position].period]
 
             //Converts it from shorttitle to full title
-            var period_name = period_data.title
-            var period_room = period_data.room
+            period_name = period_data.title
+            period_room = period_data.room
             for (var item in props.raw.timetable.subjects) {
                 if (props.raw.timetable.subjects[item].shortTitle === period_name) {
                     period_name = props.raw.timetable.subjects[item].subject
                     period_name = period_name.split(" ").slice(0, -1).join(" ") //removes the last component "YR12"
                 }
             }
-            var teacher = ""
+            teacher = ""
+            check_variation(props.raw, props.raw.shouldDisplayVariations, bell_position)
+            //Displays if its class or (EOD or RC)
             if ((period_data.fullTeacher !== undefined) && (period_data.fullTeacher !== "")) {
-                teacher = "with " + period_data.fullTeacher + ""
                 timetable.push(
                     <tr key={bell_position} className="period_class">
                         <td className="period_name">{period_name}<div className="period_teacher">{teacher}</div></td>
@@ -36,9 +66,9 @@ export default function tt_daily(props) {
                     </tr>
                 )
             }
-            
+
             //console.log(props.raw.timetable.timetable.periods[bells[bell_position].period])
-        } else { //if break
+        } else {
             if (bells[bell_position].bellDisplay.split(" ")[0] === "Period") {
                 timetable.push(
                     <tr key={bell_position} className="period_free">
@@ -58,7 +88,7 @@ export default function tt_daily(props) {
         }
     }
     return (
-        <table className="timetable_today" cellPadding={0} cellSpacing={0}>
+        <table className="timetable_today" id="timetable_today" cellPadding={0} cellSpacing={0}>
             <tbody>
                 {timetable}
             </tbody>
