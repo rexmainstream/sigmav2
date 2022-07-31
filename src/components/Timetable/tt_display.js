@@ -6,7 +6,7 @@ import TT_DAILY from './tt_daily'
 // API data (formatted)
 import { daily_formatted, weekly_formatted } from "./tt_data"
 
-export default function tt_display(props) {
+export default function tt_display({tt_data}) {
     return (
         <div className='grid_wrapper'>
             <div className='timetable'>
